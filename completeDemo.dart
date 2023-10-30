@@ -65,16 +65,27 @@ class _CandyButtonState extends State<CandyButton> {
             height: 150,
             width: 500,
             child: FittedBox(
-                /* 
-
-                    Insert button here 
-
-                */
-                /* 
-
-                    Insert drag target here
-
-                */
+              child: ElevatedButton(
+                onPressed: () {
+                  widget.onCandyGenerated();
+                  updateCandy();
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                ),
+                child: DragTarget<MyDraggableItem>(
+                  builder: (context, candidateItems, rejectedItems) {
+                    return Text(
+                      candy, 
+                      style: const TextStyle(color: Colors.amber, fontSize: 30.0)
+                    );
+                  },
+                  onAccept: (item) {
+                    widget.growCircle();
+                    updateCandy();
+                  }
+                ),
+              ),
             ),
           ),
           ),
@@ -224,11 +235,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Center(
                         child: Align(
                           alignment: Alignment.center,
-                            /*
-
-                            Insert animated object here 
-
-                            */
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            width: ringSize,
+                            height: ringSize,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.purple,
+                            )
+                          ),
                         ),
                       ),
                     ),
@@ -245,11 +260,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
                 color: Color(0xFFb00b40),
               ),
-                /*
-
-                Insert draggable object here
-
-                */
+              child: Draggable<MyDraggableItem>( 
+                data: MyDraggableItem("⚔️"),
+                feedback: const Text(
+                  "⚔️",
+                  style: TextStyle(
+                    fontSize: 120.0,
+                    decoration: TextDecoration.none,
+                    color: Color(0xFFc61ddc),
+                  )
+                ),
+                child: const Text(
+                  "⚔️",
+                  style: TextStyle(
+                    fontSize: 100.0,
+                    decoration: TextDecoration.none,
+                    color: Color(0xFFdcdcdb),
+                  )
+                ),
+             ),
             ),
           ),
         ],
